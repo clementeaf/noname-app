@@ -8,6 +8,7 @@
   "devDependencies": {
     "@types/aws-lambda": "^8.10.155",
     "@types/node": "^24.6.2",
+    "@types/uuid": "^10.0.0",
     "serverless": "^3.40.0",
     "serverless-plugin-typescript": "^2.1.5",
     "typescript": "^5.9.3"
@@ -15,6 +16,7 @@
   "dependencies": {
     "dotenv": "^17.2.3",
     "openai": "^6.1.0",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "uuid": "^13.0.0"
   }
 }
