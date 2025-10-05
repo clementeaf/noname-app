@@ -11,5 +11,10 @@
     "serverless": "^3.40.0",
     "serverless-plugin-typescript": "^2.1.5",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "openai": "^6.1.0",
+    "pg": "^8.16.3"
   }
 }
