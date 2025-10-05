@@ -12,7 +12,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       };
     }
 
-    const { message, userId } = JSON.parse(event.body);
+    const { message, userId, phone } = JSON.parse(event.body);
 
     if (!message) {
       return {
@@ -21,7 +21,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       };
     }
 
-    const result = await conversationService.processMessage(message, userId);
+    const result = await conversationService.processMessage(message, userId, phone);
 
     return {
       statusCode: 200,

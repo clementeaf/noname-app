@@ -5,6 +5,11 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+interface Message {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
 export class AgentService {
   private systemPrompt: string;
 
@@ -12,13 +17,16 @@ export class AgentService {
     this.systemPrompt = AGENT_SYSTEM_PROMPT;
   }
 
-  async execute(userMessage: string): Promise<string> {
+  async execute(userMessage: string, messageHistory: Message[] = []): Promise<string> {
+    const messages: Message[] = [
+      { role: 'system', content: this.systemPrompt },
+      ...messageHistory,
+      { role: 'user', content: userMessage }
+    ];
+
     const completion = await openai.chat.completions.create({
       model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
-      messages: [
-        { role: 'system', content: this.systemPrompt },
-        { role: 'user', content: userMessage }
-      ],
+      messages,
     });
 
     return completion.choices[0].message.content || '';

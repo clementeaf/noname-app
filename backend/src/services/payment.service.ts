@@ -1,4 +1,5 @@
 import { query } from '../database/db.service';
+import { AuthService } from './auth.service';
 
 interface FindAccountsParams {
   rut: string;
@@ -21,6 +22,12 @@ interface ExecutePaymentParams {
 }
 
 export class PaymentService {
+  private authService: AuthService;
+
+  constructor() {
+    this.authService = new AuthService();
+  }
+
   async findAccounts(params: FindAccountsParams) {
     const { rut } = params;
 
@@ -113,7 +120,7 @@ export class PaymentService {
     const { payment_id, confirm_pin, force } = params;
 
     const paymentResult = await query(
-      `SELECT p.*, u.pin_hash
+      `SELECT p.*, u.user_id
       FROM payments p
       JOIN users u ON p.user_id = u.user_id
       WHERE p.payment_id = $1`,
@@ -128,6 +135,11 @@ export class PaymentService {
 
     if (payment.status !== 'pending' && !force) {
       throw new Error('Payment already processed');
+    }
+
+    const pinValid = await this.authService.verifyPin(payment.user_id, confirm_pin);
+    if (!pinValid) {
+      throw new Error('Invalid PIN');
     }
 
     const tx_id = `tx-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
