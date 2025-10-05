@@ -1,6 +1,6 @@
-node_modules/
-.build/
-.serverless/
+backend/node_modules/
+backend/.build/
+backend/.serverless/
 *.log
 .env
-dist/
+backend/dist/
