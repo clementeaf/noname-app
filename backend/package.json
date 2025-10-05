@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "scripts": {
     "build": "tsc",
-    "deploy": "serverless deploy"
+    "deploy": "serverless deploy",
+    "dev": "export $(grep -v '^#' .env | xargs) && serverless offline start"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.155",
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^24.6.2",
     "@types/uuid": "^10.0.0",
+    "dotenv-cli": "^10.0.0",
     "serverless": "^3.40.0",
     "serverless-offline": "^13.9.0",
     "serverless-plugin-typescript": "^2.1.5",
