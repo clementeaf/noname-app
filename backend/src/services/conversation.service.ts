@@ -36,11 +36,29 @@ export class ConversationService {
 
     const agentResponse = await this.agentService.execute(userMessage, formattedHistory);
 
-    await this.sessionService.addMessage(session.session_id, 'assistant', agentResponse);
-
     const actionResult = await this.orchestratorService.execute(agentResponse, userId);
 
-    const humanResponse = this.extractHumanMessage(agentResponse);
+    let finalResponse = agentResponse;
+
+    if (actionResult && actionResult.message !== 'No action to execute') {
+      const feedbackMessage = `Resultado de la acción ejecutada:\n${JSON.stringify(actionResult, null, 2)}`;
+
+      const updatedHistory = [
+        ...formattedHistory,
+        { role: 'user' as const, content: userMessage },
+        { role: 'assistant' as const, content: agentResponse },
+        { role: 'system' as const, content: feedbackMessage }
+      ];
+
+      finalResponse = await this.agentService.execute(
+        'Presenta estos resultados al usuario de forma clara y profesional.',
+        updatedHistory
+      );
+    }
+
+    await this.sessionService.addMessage(session.session_id, 'assistant', finalResponse);
+
+    const humanResponse = this.extractHumanMessage(finalResponse);
 
     return {
       humanResponse,
