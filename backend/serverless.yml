@@ -20,6 +20,7 @@ plugins:
 functions:
   conversation:
     handler: src/handlers/conversation.handler
+    timeout: 30
     events:
       - http:
           path: /conversation

@@ -4,17 +4,22 @@
   "scripts": {
     "build": "tsc",
     "deploy": "serverless deploy",
-    "dev": "export $(grep -v '^#' .env | xargs) && serverless offline start"
+    "dev": "export $(grep -v '^#' .env | xargs) && serverless offline start",
+    "test:conversation": "npx ts-node test-conversation.ts",
+    "test:failures": "npx ts-node test-failure-detection.ts"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.155",
+    "@types/axios": "^0.9.36",
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^24.6.2",
     "@types/uuid": "^10.0.0",
+    "axios": "^1.12.2",
     "dotenv-cli": "^10.0.0",
     "serverless": "^3.40.0",
     "serverless-offline": "^13.9.0",
     "serverless-plugin-typescript": "^2.1.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
   "dependencies": {
